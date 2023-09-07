@@ -1,8 +1,7 @@
 <!doctype html>
 <html lang="{{ str_replace('_', '-', app()->getLocale()) }}">
 <head>
-    <link href="css/bootstrap.min.css" rel="stylesheet">
-
+    <link href="{{ asset('css/bootstrap.min.css') }}" rel="stylesheet">
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
 
@@ -76,6 +75,7 @@
             @yield('content')
         </main>
     </div>
-    <script src="js/bootstrap.bundle.min.js"></script>
+    <script src="{{ asset('js/bootstrap.bundle.min.js')}}"></script>
+    <script src="{{ asset('js/tinymce.js')}}"></script>
 </body>
 </html>
