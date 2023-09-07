@@ -1,9 +1,6 @@
 const path = require('path');
 
-module.exports = {
-    entry: './resources/js/app.js', // Chemin vers votre fichier JavaScript principal
-    output: {
-        filename: 'bundle.js',
-        path: path.resolve(__dirname, 'public/js'), // Le répertoire de sortie pour les fichiers bundle.js
-    },
-};
+const mix = require('laravel-mix');
+
+mix.js('resources/js/app.js', 'public/js')
+    .sass('resources/sass/app.scss', 'public/css');
