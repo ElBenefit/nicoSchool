@@ -39,7 +39,7 @@
 
             <div class="form-group">
                 <label for="content">Contenu du cours :</label>
-                <textarea name="content" id="content" class="form-control" rows="10" required></textarea>
+                <textarea name="content" id="content" class="form-control tinymce-editor" rows="10" required></textarea>
             </div>
 
             <div class="form-group">
