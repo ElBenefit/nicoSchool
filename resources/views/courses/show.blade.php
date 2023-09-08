@@ -2,6 +2,7 @@
 
 @section('content')
     <div class="container">
+    <a href="{{ route('courses.index') }}" class="btn btn-primary">Retour</a>
         <h1>Détails du cours : {{ $course->name }}</h1>
 
         <ul>
@@ -13,7 +14,16 @@
 
         <h2>Contenu du cours :</h2>
         <p>{{ $course->content }}</p>
-
-        <a href="{{ route('courses.index') }}" class="btn btn-primary">Retour à la liste des cours</a>
+        @if (!$course->isCompleted())
+    <form method="POST" action="{{ route('complete-course', ['courseId' => $course->id]) }}">
+        @csrf
+        <button type="submit" class="btn btn-primary mt-4">Marquer comme terminé</button>
+    </form>
+@else
+    <p>Cours terminé</p>
+@endif      
+        
     </div>
 @endsection
+
+

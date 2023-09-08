@@ -1,62 +1,53 @@
 @extends('layouts.app')
 
 @section('content')
-    <div class="container">
-        <h1>Liste des cours</h1>
-
-        <!-- Message de succès -->
-        @if (session('success'))
-            <div class="alert alert-success">
-                {{ session('success') }}
-            </div>
-        @endif
-
-        <!-- Formulaire de recherche -->
-        <form method="GET" action="{{ route('courses.index') }}" class="mb-4">
-            <div class="input-group">
-                <input type="text" name="search" class="form-control" placeholder="Rechercher un cours" value="{{ $search ?? '' }}">
-                <button type="submit" class="btn btn-primary">Rechercher</button>
-            </div>
-        </form>
-
-        <table class="table">
-            <thead>
-                <tr>
-                    <th>Nom du cours</th>
-                    <th>Catégorie</th>
-                    <th>Type</th>
-                    <th>Actions</th>
-                </tr>
-            </thead>
-            <tbody>
-            @foreach ($courses as $course)
-                <tr>
-                    <td>{{ $course->name }}</td>
-                    <td>
-                        @if ($course->category)
-                            {{ $course->category->name }}
-                        @else
-                            Catégorie non définie
-                        @endif
-                    </td>
-                    <td>{{ $course->type }}</td>
-                    <td>
-                        <a href="{{ route('courses.edit', $course->id) }}" class="btn btn-primary">Éditer</a>
-                        <form action="{{ route('courses.destroy', $course->id) }}" method="POST" style="display: inline;">
-                            @csrf
-                            @method('DELETE')
-                            <button type="submit" class="btn btn-danger" onclick="return confirm('Êtes-vous sûr de vouloir supprimer ce cours ?')">Supprimer</button>
-                        </form>
-                    </td>
-                </tr>
-            @endforeach
-
-            </tbody>
-        </table>
-        <!-- Bouton pour créer un nouveau cours -->
-        <a href="{{ route('courses.create') }}" class="btn btn-success">Créer un nouveau cours</a>
-
-        <!-- Pagination avec recherche -->
-        {{ $courses->appends(['search' => $search])->links() }}
+<div class="container">
+    <h1>Liste des Cours</h1>
+    @if ($categories->isEmpty())
+    <div class="alert alert-warning">
+        Vous n'avez aucune catégorie de cours.
     </div>
+    @else
+    <div class="row">
+        @foreach ($categories as $category)
+        <div class="col-md-4 mb-4">
+            <div class="card">
+                <h5 class="card-header">{{ $category->name }}</h5>
+                <div class="card-body">
+                <ul class="list-unstyled">
+                
+                    @php
+                    $courses = $category->courses->take(6); // Prendre les 6 premiers cours
+                    $completedCourses = Auth::user()->completedCourses->pluck('course_id')->toArray();
+                    $isNextCourseClickable = false; // Indique si le prochain cours doit être cliquable
+                    @endphp
+                    @foreach ($courses as $course)
+                    <li class="mb-2">
+                        @if (($course->order === 1) ||  $course->isCompleted() )
+                        <a href="{{ route('courses.show', $course->id) }}">{{ $course->name }}  {{ $course->order }}</a>
+                        @else
+                        {{ $course->name }}
+
+                            @endif
+
+                            @if (in_array($course->id, $completedCourses))
+                         
+                                @php
+                                $isNextCourseClickable = true;
+                              
+                                @endphp
+                            @endif
+                        </li>
+                    @endforeach
+                </ul>
+                    @if ($category->courses->count() > 6)
+                    <a href="{{ route('categories.show', $category->id) }}" class="btn btn-primary">Voir Tout</a>
+                    @endif
+                </div>
+            </div>
+        </div>
+        @endforeach
+    </div>
+    @endif
+</div>
 @endsection

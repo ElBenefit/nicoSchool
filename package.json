@@ -14,7 +14,7 @@
         "@popperjs/core": "^2.11.6",
         "axios": "^1.1.2",
         "babel-loader": "^9.1.3",
-        "bootstrap": "^5.2.3",
+        "bootstrap": "^5.3.1",
         "laravel-mix": "^6.0.49",
         "laravel-vite-plugin": "^0.8.0",
         "resolve-url-loader": "^5.0.0",
@@ -23,8 +23,5 @@
         "vite": "^4.0.0",
         "webpack": "^5.88.2",
         "webpack-cli": "^5.1.4"
-    },
-    "dependencies": {
-        "tinymce": "^6.7.0"
     }
 }

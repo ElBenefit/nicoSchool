@@ -38,9 +38,9 @@
                 </select>
             </div>
 
-            <div class="mb-3">
-                <label for="content" class="form-label">Contenu du cours</label>
-                <textarea class="form-control" id="content" name="content" rows="5">{{ $course->content }}</textarea>
+            <div class="form-group">
+                <label for="content">Contenu du cours :</label>
+                <textarea name="content" id="summernote" >{{ $course->content }}</textarea>
             </div>
 
             <button type="submit" class="btn btn-primary">Enregistrer les modifications</button>

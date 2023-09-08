@@ -4,7 +4,7 @@
     <div class="container">
         <h1>Créer un nouveau cours</h1>
 
-        <form method="POST" action="{{ route('courses.store') }}" enctype="multipart/form-data">
+        <form method="POST" action="{{ route('courses.store') }}" >
             @csrf
 
             <div class="form-group">
@@ -39,15 +39,12 @@
 
             <div class="form-group">
                 <label for="content">Contenu du cours :</label>
-                <textarea name="content" id="content" class="form-control tinymce-editor" rows="10" required></textarea>
+                <textarea name="content" id="summernote" ></textarea>
             </div>
-
-            <div class="form-group">
-                <label for="image">Image :</label>
-                <input type="file" name="image" id="image" class="form-control-file">
-            </div>
+          
 
             <button type="submit" class="btn btn-primary">Créer le cours</button>
         </form>
     </div>
+ 
 @endsection

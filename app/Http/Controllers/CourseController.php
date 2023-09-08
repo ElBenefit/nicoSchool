@@ -4,6 +4,10 @@ namespace App\Http\Controllers;
 use App\Models\Course;
 use Illuminate\Http\Request;
 use App\Models\Category;
+use DOMDocument;
+use Illuminate\Support\Facades\File;
+use Illuminate\Support\Str;
+use Illuminate\Support\Facades\Auth;
 
 class CourseController extends Controller
 {
@@ -18,32 +22,46 @@ class CourseController extends Controller
     })->except(['index', 'show']);
     }
     public function index(Request $request)
-{
-    $search = $request->input('search');
-    if ($search) {
-        $courses = Course::where('name', 'LIKE', "%{$search}%")->paginate(10);
-    } else {
-        $courses = Course::paginate(10);
-    }
-    return view('courses.index', compact('courses', 'search'));
-}
+        {
+            // Récupérer l'utilisateur connecté
+        $user = Auth::user();
+        $courses = Course::all(); 
+        // Récupérer les catégories auxquelles l'utilisateur a accès
+        $categories = $user->categories;
+
+        return view('courses.index', compact('categories','user'));
+        }
 public function store(Request $request)
 {
+
     $request->validate([
         'name' => 'required',
         'type' => 'required',
-        'image' => 'nullable|image|max:2048',
     ]);
 
-    $course = new Course($request->all());
+    $description = $request->content;
+ 
+    $dom = new DOMDocument();
+    $dom->loadHTML($description,9);
 
-    if ($request->hasFile('image')) {
-        $path = $request->file('image')->store('course_images', 'public');
-        $course->image_path = $path;
+    $images = $dom->getElementsByTagName('img');
+  
+    foreach ($images as $key => $img) {
+        $data = base64_decode(explode(',',explode(';',$img->getAttribute('src'))[1])[1]);
+        $image_name = "/upload/" . time(). $key.'.png';
+        file_put_contents(public_path().$image_name,$data);
+
+        $img->removeAttribute('src');
+        $img->setAttribute('src',$image_name);
     }
-
-    $course->save();
-
+    $description = $dom->saveHTML();
+    Course::create([
+        'name' => $request->name,
+        'category_id' => $request->category_id,
+        'type' => $request->type,
+        'visibility' => $request->visibility,
+        'content' => $description
+    ]);
     session()->flash('success', 'Cours créé avec succès.');
     return redirect()->route('courses.index');
 }

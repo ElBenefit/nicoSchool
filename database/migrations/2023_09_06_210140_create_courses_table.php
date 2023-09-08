@@ -14,10 +14,11 @@ return new class extends Migration
         Schema::create('courses', function (Blueprint $table) {
             $table->id();
             $table->string('name');
-            $table->text('content');
+            $table->longText('content');
             $table->string('type'); // Exercice, Théorie, etc.
             $table->string('visibility')->default('privé'); // Vous pouvez ajuster la définition selon vos besoins
             $table->foreignId('category_id')->constrained();
+            $table->integer('order')->nullable(); // Champ pour l'ordre de séquence
             $table->timestamps();
         });
     }
