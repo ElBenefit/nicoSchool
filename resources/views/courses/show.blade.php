@@ -2,7 +2,7 @@
 
 @section('content')
     <div class="container">
-    <a href="{{ route('courses.index') }}" class="btn btn-primary">Retour</a>
+    <a href="{{ url()->previous() }}" class="btn btn-primary">Retour</a>
         <h1>Détails du cours : {{ $course->name }}</h1>
 
         <ul>

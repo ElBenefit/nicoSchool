@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 use App\Models\Course;
 use Illuminate\Http\Request;
+use App\Models\UserCourse;
 use App\Models\Category;
 use DOMDocument;
 use Illuminate\Support\Facades\File;
@@ -26,10 +27,11 @@ class CourseController extends Controller
             // Récupérer l'utilisateur connecté
         $user = Auth::user();
         $courses = Course::all(); 
+        $userCoursesCompleted = UserCourse::all(); 
         // Récupérer les catégories auxquelles l'utilisateur a accès
         $categories = $user->categories;
 
-        return view('courses.index', compact('categories','user'));
+        return view('courses.index', compact('categories','user','userCoursesCompleted'));
         }
 public function store(Request $request)
 {

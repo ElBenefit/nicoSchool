@@ -17,12 +17,33 @@ class CoursesSeeder extends Seeder
         $categoryId = DB::table('categories')->where('name', 'Histoire')->value('id');
 
         // Insérez 15 cours associés à la catégorie "Histoire"
-        for ($i = 1; $i <= 32; $i++) {
+        for ($i = 1; $i <= 21; $i++) {
             DB::table('courses')->insert([
                 'name' => "Cours $i",
                 'type' => 'Théorie',
-                'category_id' => rand(1,3),
+                'category_id' => 1,
                 'content' => "Contenu du cours $i ici",
+                'order' => $i,
+            ]);
+        }
+             // Insérez 15 cours associés à la catégorie "Histoire"
+             for ($i = 1; $i <= 14; $i++) {
+                DB::table('courses')->insert([
+                    'name' => "Cours $i",
+                    'type' => 'Théorie',
+                    'category_id' => 2,
+                    'content' => "Contenu du cours $i ici",
+                    'order' => $i,
+                ]);
+            }
+                 // Insérez 15 cours associés à la catégorie "Histoire"
+        for ($i = 1; $i <= 17; $i++) {
+            DB::table('courses')->insert([
+                'name' => "Cours $i",
+                'type' => 'Théorie',
+                'category_id' => 3,
+                'content' => "Contenu du cours $i ici",
+                'order' => $i,
             ]);
         }
    

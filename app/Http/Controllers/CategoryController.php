@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 use App\Models\Category;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use App\Models\UserCourse;
 
 class CategoryController extends Controller
 {
@@ -19,7 +20,7 @@ public function show($id)
     $category = Category::findOrFail($id);
     
     $user = auth()->user(); // Utilisateur connecté
-
+    $userCoursesCompleted = UserCourse::all(); 
     // Vérifiez si l'utilisateur a accès à cette catégorie via la table categories_users
     $access = $user->categories->contains($category);
 
@@ -31,7 +32,7 @@ public function show($id)
         return redirect()->route('courses.index')->with('error', 'Vous n\'avez pas accès à cette catégorie.');
     }
 
-    return view('categories.show', compact('category', 'courses'));
+    return view('categories.show', compact('category', 'courses','userCoursesCompleted'));
 }
 
 public function create()
