@@ -23,6 +23,7 @@ class CoursesSeeder extends Seeder
                 'type' => 'Théorie',
                 'category_id' => 1,
                 'content' => "Contenu du cours $i ici",
+                'experiences_gived' => rand(50, 200),  // Points d'expérience aléatoires pour cet exemple
                 'order' => $i,
             ]);
         }
@@ -33,6 +34,7 @@ class CoursesSeeder extends Seeder
                     'type' => 'Théorie',
                     'category_id' => 2,
                     'content' => "Contenu du cours $i ici",
+                    'experiences_gived' => rand(50, 200),  // Points d'expérience aléatoires pour cet exemple
                     'order' => $i,
                 ]);
             }
@@ -43,6 +45,7 @@ class CoursesSeeder extends Seeder
                 'type' => 'Théorie',
                 'category_id' => 3,
                 'content' => "Contenu du cours $i ici",
+                'experiences_gived' => rand(50, 200),  // Points d'expérience aléatoires pour cet exemple
                 'order' => $i,
             ]);
         }

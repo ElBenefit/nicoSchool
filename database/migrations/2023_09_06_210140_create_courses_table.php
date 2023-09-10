@@ -19,6 +19,8 @@ return new class extends Migration
             $table->string('visibility')->default('privé'); // Vous pouvez ajuster la définition selon vos besoins
             $table->foreignId('category_id')->constrained();
             $table->integer('order')->nullable(); // Champ pour l'ordre de séquence
+            $table->integer('experiences_gived')->nullable();
+            $table->integer('currencies_gived')->nullable();
             $table->timestamps();
         });
     }

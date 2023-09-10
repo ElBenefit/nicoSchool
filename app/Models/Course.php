@@ -15,6 +15,9 @@ class Course extends Model
         'type',
         'content',
         'visibility', // Ajoutez cette ligne
+        'order',
+        'experiences_gived',
+        'currencies_gived',
     ];
     public function users()
     {

@@ -10,7 +10,6 @@ use App\Http\Controllers\UserCourseController;
 
 // Routes d'authentification générées automatiquement
 Auth::routes();
-
 // Routes pour les cours et les catégories
 Route::middleware(['auth'])->group(function () {
     Route::resource('courses', CourseController::class);

@@ -5,7 +5,7 @@ use App\Models\Category;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use App\Models\UserCourse;
-
+use App\Models\Course;
 class CategoryController extends Controller
 {
     public function index()
@@ -26,7 +26,8 @@ public function show($id)
 
     if ($access) {
         // Récupérez les cours de la catégorie si l'utilisateur a accès
-        $courses = $category->courses;
+        $courses = Course::where('category_id', $id)->orderBy('order', 'asc')->get();
+       
     } else {
         // Redirigez l'utilisateur vers une page d'erreur ou effectuez une autre action en fonction de votre logique.
         return redirect()->route('courses.index')->with('error', 'Vous n\'avez pas accès à cette catégorie.');

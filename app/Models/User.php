@@ -22,6 +22,11 @@ class User extends Authenticatable
         'name',
         'email',
         'password',
+        'gamifier',
+        'group_id',        
+        'currencies',
+        "experiences",
+        'level',
     ];
 
     /**

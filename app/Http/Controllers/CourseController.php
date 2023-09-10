@@ -33,47 +33,63 @@ class CourseController extends Controller
 
         return view('courses.index', compact('categories','user','userCoursesCompleted'));
         }
-public function store(Request $request)
-{
 
-    $request->validate([
-        'name' => 'required',
-        'type' => 'required',
-    ]);
+    public function store(Request $request)
+    {
+        $request->validate([
+            'name' => 'required',
+            'type' => 'required',
+        ]);
 
-    $description = $request->content;
- 
-    $dom = new DOMDocument();
-    $dom->loadHTML($description,9);
+        $description = $request->content;
+    
+        $dom = new DOMDocument();
+        $dom->loadHTML($description,9);
 
-    $images = $dom->getElementsByTagName('img');
-  
-    foreach ($images as $key => $img) {
-        $data = base64_decode(explode(',',explode(';',$img->getAttribute('src'))[1])[1]);
-        $image_name = "/upload/" . time(). $key.'.png';
-        file_put_contents(public_path().$image_name,$data);
+        $images = $dom->getElementsByTagName('img');
+    
+        foreach ($images as $key => $img) {
+            $data = base64_decode(explode(',',explode(';',$img->getAttribute('src'))[1])[1]);
+            $image_name = "/upload/" . time(). $key.'.png';
+            file_put_contents(public_path().$image_name,$data);
 
-        $img->removeAttribute('src');
-        $img->setAttribute('src',$image_name);
+            $img->removeAttribute('src');
+            $img->setAttribute('src',$image_name);
+        }
+        $description = $dom->saveHTML();
+
+        $data = $request->all();
+        $new_order = $data['order'] ;
+        $category_id = $data['category_id'];
+        // Décaler les numéros d'ordre des cours suivants
+        Course::where('category_id', $category_id)
+              ->where('order', '>=', $new_order)
+              ->increment('order');    
+     
+        Course::create([
+            'name' => $request->name,
+            'category_id' => $request->category_id,
+            'type' => $request->type,
+            'visibility' => $request->visibility,
+            'content' => $description,
+            'order' => $new_order,
+        ]);
+
+        session()->flash('success', 'Cours créé avec succès.');
+        return redirect()->route('courses.index');
     }
-    $description = $dom->saveHTML();
-    Course::create([
-        'name' => $request->name,
-        'category_id' => $request->category_id,
-        'type' => $request->type,
-        'visibility' => $request->visibility,
-        'content' => $description
-    ]);
-    session()->flash('success', 'Cours créé avec succès.');
-    return redirect()->route('courses.index');
-}
+
+
 public function create()
 {
     // Récupérer toutes les catégories depuis la base de données
-    $categories = Category::all();
+    $categories = Category::with(['courses' => function($query) {
+        $query->orderBy('order', 'asc');
+    }])->get();
 
+    $courses = Course::orderBy('order', 'asc')->get();
     // Afficher la vue de création de cours en passant les catégories
-    return view('courses.create', compact('categories'));
+    return view('courses.create', compact('categories','courses'));
 }
 public function edit($id)
 {
@@ -118,5 +134,23 @@ public function show($id)
     // Affichez la vue des détails du cours en passant le cours récupéré
     return view('courses.show', compact('course'));
 }
+public function destroy($id)
+{
+    $course = Course::find($id);
+    $category_id = $course->category_id;
+    $course->delete();
 
+    // Réorganiser les valeurs de la colonne 'order'
+    $remainingCourses = Course::where('category_id', $category_id)
+                               ->orderBy('order')
+                               ->get();
+
+    $order = 1;
+    foreach ($remainingCourses as $remainingCourse) {
+        $remainingCourse->order = $order++;
+        $remainingCourse->save();
+    }
+
+    return redirect()->route('courses.index');
+}
 }

@@ -19,6 +19,7 @@ class DatabaseSeeder extends Seeder
             UsersSeeder::class,
             CoursesSeeder::class,
             CategoriesUsersSeeder::class,
+            LevelsTableSeeder::class,
         ]);
     }
 }

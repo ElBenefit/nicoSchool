@@ -38,6 +38,7 @@ class UsersController extends Controller
             'name' => 'required|string|max:255',
             'email' => 'required|string|email|unique:users',
             'password' => 'required|min:8',
+            'group_id' => 'required',
         ]);
         $selectedCategories = $request->input('categories', []);
 
@@ -87,6 +88,7 @@ class UsersController extends Controller
         $user->name = $request->input('name');
         $user->email = $request->input('email');
         $user->group_id = $request->input('group_id');
+        $user->is_gamified = $request->has('is_gamified');
         $user->save();
 
         return redirect()->route('users.edit', $user->id)->with('success', 'Utilisateur mis à jour avec succès');

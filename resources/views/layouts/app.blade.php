@@ -44,6 +44,20 @@
                     <a class="nav-link" href="{{ route('users.index') }}">Membres</a>
                 </li>
             </ul>
+            @if(isset($user) && $user->is_gamified)
+            <div class="menu-item">
+                <span>Niveau : {{ $currentLevel }}</span>
+                <div class="progress">
+                    @php
+                        $previousExperience = $previousLevel ? $previousLevel->required_experience : 0;
+                        $requiredExperience = $nextLevel->required_experience - $previousExperience;
+                        $currentProgress = $currentExperience - $previousExperience;
+                        $progressPercent = ($currentProgress / $requiredExperience) * 100;
+                    @endphp
+                    <div class="progress-bar" role="progressbar" style="width: {{ $progressPercent }}%;" aria-valuenow="{{ $currentProgress }}" aria-valuemin="0" aria-valuemax="{{ $requiredExperience }}"></div>
+                </div>
+            </div>
+        @endif
 
             <!-- Right Side Of Navbar -->
             <ul class="navbar-nav ms-auto">
@@ -82,6 +96,8 @@
             </ul>
         </div>
     </div>
+
+
 </nav>
 
 
@@ -92,6 +108,7 @@
         </main>
     </div>
     <script src="{{ asset('js/bootstrap.min.js') }}"></script>
+    <script src="{{ asset('js/bootstrap.bundle.min.js') }}"></script>
     <script>
     $(document).ready(function() {
   $('#summernote').summernote();

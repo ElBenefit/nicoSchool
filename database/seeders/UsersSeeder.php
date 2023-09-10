@@ -21,6 +21,7 @@ class UsersSeeder extends Seeder
             'name' => 'Admin',
             'email' => 'admin@example.com',
             'password' => Hash::make('password'),
+            'is_gamified' => 1,            
             'role' => 'admin',  // Assurez-vous que votre table users a une colonne 'role',
         ]);
 

@@ -17,7 +17,11 @@ return new class extends Migration
             $table->string('email')->unique();
             $table->timestamp('email_verified_at')->nullable();
             $table->string('password');            
+            $table->boolean('is_gamified')->nullable();    
             $table->string('group_id')->nullable();
+            $table->integer('currencies')->default('0');
+            $table->integer('experiences')->default('0');
+            $table->integer('level')->default('1');
             $table->rememberToken();
             $table->timestamps();
         });

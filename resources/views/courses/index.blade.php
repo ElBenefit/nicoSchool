@@ -21,6 +21,7 @@
                     @endphp
                     @foreach ($courses as $course)
                         <li class="mb-2">
+                        @if (Auth::user()->is_gamified)
                             @if (($course->order === 1) || $course->isCompleted())
                                 <a href="{{ route('courses.show', $course->id) }}">{{ $course->name }}</a>
                                 @else
@@ -38,6 +39,9 @@
                                     {{ $course->name }}
                                 @endif
                             @endif
+                         @else
+                         <a href="{{ route('courses.show', $course->id) }}">{{ $course->name }}</a>
+                         @endif   
                         </li>
                     @endforeach
                 </ul>

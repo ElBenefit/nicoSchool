@@ -42,6 +42,11 @@
                 </div>
             @endforeach
 
+            <div class="form-group my-4">
+                <label for="is_gamified">Activer la gamification :</label>
+                <input type="checkbox" name="is_gamified" id="is_gamified" {{ Auth::user()->is_gamified ? 'checked' : '' }}>
+            </div>
+
             <button type="submit" class="btn btn-primary">Enregistrer</button>
             <a href="{{ route('users.index') }}" class="btn btn-secondary">Retour</a>
         </form>
